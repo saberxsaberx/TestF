@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Flagm8</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+</head>
+<body>
+<div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+            <div id="unity-progress-bar-full"></div>
+        </div>
+    </div>
+    <div id="unity-warning"></div>
+
+    <!-- Fullscreen start container -->
+    <div id="start-container">
+        <button id="start-button">Start Game</button>
+    </div>
+
+    <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <button id="unity-fullscreen-button">Fullscreen</button>
+        <div id="unity-build-title" style="display: none;">Flagm8</div>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector("#unity-container");
+    const canvas = document.querySelector("#unity-canvas");
+    const loadingBar = document.querySelector("#unity-loading-bar");
+    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+    const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+    const startContainer = document.querySelector("#start-container");
+    const startButton = document.querySelector("#start-button");
+
+    const buildUrl = "Build";
+    const loaderUrl = buildUrl + "/test1.loader.js";
+    const config = {
+        dataUrl: buildUrl + "/test1.data.unityweb",
+        frameworkUrl: buildUrl + "/test1.framework.js.unityweb",
+        codeUrl: buildUrl + "/test1.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+    productName: "Flagm8",
+    productVersion: "1.0.0",
+    };
+
+    // Start button logic
+    startButton.addEventListener("click", () => {
+        // Request fullscreen
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        } else if (canvas.mozRequestFullScreen) {
+            canvas.mozRequestFullScreen();
+        } else if (canvas.msRequestFullscreen) {
+            canvas.msRequestFullscreen();
+        } else {
+            alert("Fullscreen mode is not supported in this browser.");
+        }
+
+        // Hide the start button and initialize Unity
+        startContainer.style.display = "none";
+
+        // Initialize Unity instance
+        initializeUnity();
+    });
+
+    // Fullscreen button logic
+    fullscreenButton.addEventListener("click", () => {
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        }
+    });
+
+    // Detect fullscreen changes
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            // Exiting fullscreen: Show fullscreen button and resize canvas
+            fullscreenButton.style.display = "block";
+            container.style.width = "80%";
+            container.style.height = "80%";
+        } else {
+            // Entering fullscreen: Hide fullscreen button and expand canvas
+            fullscreenButton.style.display = "none";
+            container.style.width = "100%";
+            container.style.height = "100%";
+        }
+    });
+
+    function initializeUnity() {
+        const script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+                progressBarFull.style.width = 100 * progress + "%";
+            }).then((unityInstance) => {
+                loadingBar.style.display = "none";
+            }).catch((message) => {
+                alert(message);
+            });
+        };
+        document.body.appendChild(script);
+    }
+</script>
+</body>
+</html>
