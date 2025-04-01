@@ -6,6 +6,7 @@
     <type fullname="bl_MiniMapEntity" preserve="all" />
     <type fullname="Coin" preserve="all" />
     <type fullname="Friend_Manager.FriendRequestCard" preserve="all" />
+    <type fullname="HexFirewall" preserve="all" />
     <type fullname="House.Miner" preserve="all" />
     <type fullname="House.Server" preserve="all" />
     <type fullname="OwnerSharedData" preserve="all" />
@@ -96,6 +97,7 @@
   </assembly>
   <assembly fullname="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.BoxCollider" preserve="all" />
+    <type fullname="UnityEngine.Rigidbody" preserve="all" />
     <type fullname="UnityEngine.SphereCollider" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.TextCoreTextEngineModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
